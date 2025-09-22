@@ -1,0 +1,17 @@
+[flake8]
+# 忽略某些非关键的警告，例如：
+# E501: line too long (行太长，我们下面用 max-line-length 控制)
+# W503: line break before binary operator (在二元运算符前换行，与 black 格式化工具冲突)
+ignore = E501, W503
+
+# 设置最大行长为 88 个字符，这是 black 格式化工具的默认值，也是一个现代通用标准
+max-line-length = 88
+
+# 设置代码最大复杂度
+max-complexity = 10
+
+# 在报告中显示统计信息
+statistics = True
+
+# 显示错误数量
+count = True
