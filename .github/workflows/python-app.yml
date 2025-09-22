@@ -113,7 +113,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # 告诉 PyPI 插件，用户名为 __token__
-          PYPI_USERNAME: __token__
           # 将我们存储的 GitHub Secret 作为密码传递
-          PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
+          PYPI_TOKEN: ${{ secrets.PYPI }}
         run: npx semantic-release
