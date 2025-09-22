@@ -1,5 +1,55 @@
 # CI-CD-Test
 
+## git commit格式
+
+**规范格式：**
+
+```
+<type>(<scope>): <subject>
+<BLANK LINE>
+<body>
+<BLANK LINE>
+<footer>
+```
+
+对于大部分提交，我们只需要关心第一行 `header` 部分：`<type>(<scope>): <subject>`。
+
+- **`type` (类型)**：必填，说明这次提交的性质。常用的 `type` 包括：
+	- `feat`: 新功能 (feature)
+	- `fix`: 修复 bug
+	- `docs`: 只修改了文档 (documentation)
+	- `style`: 代码格式修改，不影响代码逻辑 (空格、格式化、缺少分号等)
+	- `refactor`: 代码重构，既不是修复 bug 也不是新增功能
+	- `test`: 增加或修改测试
+	- `chore`: 构建过程或辅助工具的变动 (比如修改 CI 流程)
+	- `ci`: 对 CI 配置或脚本的修改
+- **`scope` (范围)**：选填，说明本次提交影响的范围。例如 `(api)`, `(db)`, `(calc)`。
+- **`subject` (主题)**：必填，简短描述本次提交的目的，不超过 50 个字符。
+	- 以动词开头，使用第一人称现在时，比如 `change` 而不是 `changed` 或 `changes`。
+	- 第一个字母小写。
+	- 末尾不加句号 (`.`)。
+
+**示例：**
+
+- **好的示例**:
+
+	```
+	feat(parser): add support for parentheses
+	fix: correct calculation for division by zero
+	docs: update README with setup instructions
+	chore: upgrade pytest to version 8.5.0
+	```
+
+- **不好的示例**:
+
+	```
+	fixed the bug
+	Update
+	WIP
+	```
+
+
+
 #### 1. `name`
 
 ```
