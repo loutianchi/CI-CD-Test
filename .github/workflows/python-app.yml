@@ -50,3 +50,18 @@ jobs:
     - name: Test with pytest
       run: |
         pytest
+        
+  commit-lint:
+    name: Commit Message Lint
+    # 这个任务只在 Pull Request 事件中运行
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # 需要拉取所有历史记录，以便 linter 可以检查 PR 中的所有 commit
+          fetch-depth: 0
+      
+      - name: Lint Commit Messages
+        # 使用社区提供的 commitlint Action
+        uses: wagoid/commitlint-github-action@v5
