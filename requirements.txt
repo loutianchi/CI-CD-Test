@@ -1,3 +1,0 @@
-# Testing and Linting Tools
-pytest
-flake8
