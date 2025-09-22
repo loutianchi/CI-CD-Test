@@ -8,6 +8,7 @@ def calculate(expression: str) -> float:
     然后计算后缀表达式得出结果。
     """
     
+
     # 1. 中缀表达式转后缀表达式 (Shunting-yard algorithm)
     def infix_to_postfix(tokens):
         # 运算符优先级
