@@ -33,7 +33,7 @@ def test_valid_expressions(expression, expected):
     ("2.5 * 4", 10.0),
     ("10.5 / 2", 5.25),
     ("3.1 + 4.2 * 2", 11.5),
-    ("0.1 + 0.2", 0.3) # 经典的浮点数精度问题
+    ("0.1 + 0.2", 0.3)  # 经典的浮点数精度问题
 ])
 def test_float_expressions(expression, expected):
     """
@@ -43,6 +43,8 @@ def test_float_expressions(expression, expected):
 
 # 3. 使用 pytest.raises 来测试预期的异常
 @pytest.mark.parametrize("expression, error", [
+
+    
     # 除零错误
     ("10 / 0", ZeroDivisionError),
     # 无效表达式
@@ -62,6 +64,8 @@ def test_invalid_expressions(expression, error):
 
 # 也可以写一些独立的、不带参数的测试函数
 def test_simple_case_without_param():
+
+
     """
     一个独立的简单测试用例
     """
