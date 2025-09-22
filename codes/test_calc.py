@@ -53,8 +53,8 @@ def test_float_expressions(expression, expected):
     ("5 5 + 3", ValueError),
     ("", ValueError),
     ("5 +", ValueError),
-    # # 包含无效字符
-    # ("5a + 3", ValueError),
+    # 包含无效字符
+    ("5a + 3", ValueError),
 ])
 def test_invalid_expressions(expression, error):
     """
