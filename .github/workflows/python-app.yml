@@ -1,0 +1,51 @@
+# This workflow is now optimized for multi-version testing, caching, and better dependency management.
+
+name: Python application CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    # 更改任务名称以反映其内容
+    name: Test with Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    
+    # 1. 使用 Matrix 策略
+    strategy:
+      fail-fast: false # 即使一个版本的测试失败，也继续运行其他版本的测试
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12"]
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4 # 建议使用最新主版本号
+      with:
+        python-version: ${{ matrix.python-version }}
+        # 2. 启用依赖缓存
+        cache: 'pip'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        # 3. 从 requirements 文件安装依赖
+        pip install -r requirements-dev.txt
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        
+    - name: Lint with flake8
+      run: |
+        # 4. 从配置文件读取规则，命令更简洁
+        # --config 指定配置文件，使 CI 和本地行为一致
+        flake8 . --config=.flake8
+
+    - name: Test with pytest
+      run: |
+        pytest
