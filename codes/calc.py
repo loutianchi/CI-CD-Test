@@ -1,5 +1,6 @@
 import re
 
+
 def calculate(expression: str) -> float:
     """
     安全地计算字符串数学表达式（支持+、-、*、/）。
@@ -74,7 +75,6 @@ def calculate(expression: str) -> float:
     except (ValueError, ZeroDivisionError) as e:
         print(f"计算错误: {e}")
         return float('nan')  # 返回 NaN 表示错误
-
 
 # --- 示例 ---
 print("--- 使用安全方法计算 ---")

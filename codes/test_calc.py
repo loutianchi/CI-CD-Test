@@ -43,8 +43,6 @@ def test_float_expressions(expression, expected):
 
 # 3. 使用 pytest.raises 来测试预期的异常
 @pytest.mark.parametrize("expression, error", [
-
-    
     # 除零错误
     ("10 / 0", ZeroDivisionError),
     # 无效表达式
@@ -55,6 +53,8 @@ def test_float_expressions(expression, expected):
     # 包含无效字符
     ("5a + 3", ValueError),
 ])
+
+
 def test_invalid_expressions(expression, error):
     """
     测试会引发异常的无效表达式
@@ -62,10 +62,9 @@ def test_invalid_expressions(expression, error):
     with pytest.raises(error):
         calculate(expression)
 
+
 # 也可以写一些独立的、不带参数的测试函数
 def test_simple_case_without_param():
-
-
     """
     一个独立的简单测试用例
     """
