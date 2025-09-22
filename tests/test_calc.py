@@ -1,7 +1,7 @@
 # test_calculator.py
 
 import pytest
-from calc import calculate
+from py_calculator.calc import calculate
 
 
 # 1. 使用 @pytest.mark.parametrize 来测试多组合法的表达式
