@@ -42,7 +42,8 @@ jobs:
         # 3. 从 requirements 文件安装依赖
         pip install -r requirements-dev.txt
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        
+        pip install -e .
+
     - name: Lint with flake8
       run: |
         # 4. 从配置文件读取规则，命令更简洁
