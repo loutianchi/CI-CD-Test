@@ -83,6 +83,3 @@ print(f"'{expr2}' 的计算结果是: {calculate(expr2)}")  # 预期: 20.0
 
 expr3 = "2.5 * 4 + 10.5"
 print(f"'{expr3}' 的计算结果是: {calculate(expr3)}")  # 预期: 20.5
-
-expr4 = "10 / 0"
-print(f"'{expr4}' 的计算结果是: {calculate(expr4)}")  # 预期: 错误信息和 nan
