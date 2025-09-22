@@ -50,6 +50,7 @@ def test_float_expressions(expression, expected):
     ("10 / 0", ZeroDivisionError),
     # 无效表达式
     ("5 * + 3", ValueError),
+    ("5 5 + 3", ValueError),
     ("", ValueError),
     ("5 +", ValueError),
     # 包含无效字符
