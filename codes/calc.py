@@ -76,6 +76,7 @@ def calculate(expression: str) -> float:
         print(f"计算错误: {e}")
         return float('nan')  # 返回 NaN 表示错误
 
+
 # --- 示例 ---
 print("--- 使用安全方法计算 ---")
 expr1 = "3 + 5 * 2"

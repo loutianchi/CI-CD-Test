@@ -3,6 +3,7 @@
 import pytest
 from calculator import calculate
 
+
 # 1. 使用 @pytest.mark.parametrize 来测试多组合法的表达式
 # 这是 pytest 最强大的功能之一
 @pytest.mark.parametrize("expression, expected", [
@@ -28,6 +29,7 @@ def test_valid_expressions(expression, expected):
     """
     assert calculate(expression) == expected
 
+
 # 2. 单独测试浮点数，使用 pytest.approx 来处理精度问题
 @pytest.mark.parametrize("expression, expected", [
     ("2.5 * 4", 10.0),
@@ -41,6 +43,7 @@ def test_float_expressions(expression, expected):
     """
     assert calculate(expression) == pytest.approx(expected)
 
+
 # 3. 使用 pytest.raises 来测试预期的异常
 @pytest.mark.parametrize("expression, error", [
     # 除零错误
@@ -53,8 +56,6 @@ def test_float_expressions(expression, expected):
     # 包含无效字符
     ("5a + 3", ValueError),
 ])
-
-
 def test_invalid_expressions(expression, error):
     """
     测试会引发异常的无效表达式
