@@ -62,19 +62,15 @@ def calculate(expression: str) -> float:
         return stack[0]
 
     # --- 主逻辑 ---
-    try:
-        # 使用正则表达式将表达式分割为数字和运算符
-        # 这个正则表达式可以处理整数、浮点数和运算符
-        tokens = re.findall(r'(\d+\.?\d*|[\+\-\*\/])', expression.replace(" ", ""))
-        if not tokens:
-            raise ValueError("表达式为空或无效")
+    # 使用正则表达式将表达式分割为数字和运算符
+    # 这个正则表达式可以处理整数、浮点数和运算符
+    tokens = re.findall(r'(\d+\.?\d*|[\+\-\*\/])', expression.replace(" ", ""))
+    if not tokens:
+        raise ValueError("表达式为空或无效")
 
-        postfix_expr = infix_to_postfix(tokens)
-        result = evaluate_postfix(postfix_expr)
-        return result
-    except (ValueError, ZeroDivisionError) as e:
-        print(f"计算错误: {e}")
-        return float('nan')  # 返回 NaN 表示错误
+    postfix_expr = infix_to_postfix(tokens)
+    result = evaluate_postfix(postfix_expr)
+    return result
 
 
 # --- 示例 ---
