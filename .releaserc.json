@@ -2,12 +2,12 @@
   "branches": ["main"],
   "plugins": [
     "@semantic-release/commit-analyzer",
-    "@semantic-release/release-notes-generator",
-    "semantic-release-pypi",
+    "@semantic-release/release-notes-generator", 
     [
-      "@semantic-release/changelog",
+      "semantic-release-pypi",
       {
-        "changelogFile": "CHANGELOG.md"
+        "pypiPublish": true,
+        "twineCheck": false
       }
     ],
     [
@@ -15,16 +15,41 @@
       {
         "assets": [
           {"path": "dist/*.whl", "label": "Python Wheel"},
-          {"path": "dist/*.tar.gz", "label": "Source Archive"}
+          {"path": "dist/*.tar.gz", "label": "Source Distribution"}
         ]
-      }
-    ],
-    [
-      "@semantic-release/git",
-      {
-        "assets": ["CHANGELOG.md", "pyproject.toml"],
-        "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
       }
     ]
   ]
 }
+
+
+// {
+//   "branches": ["main"],
+//   "plugins": [
+//     "@semantic-release/commit-analyzer",
+//     "@semantic-release/release-notes-generator",
+//     "semantic-release-pypi",
+//     [
+//       "@semantic-release/changelog",
+//       {
+//         "changelogFile": "CHANGELOG.md"
+//       }
+//     ],
+//     [
+//       "@semantic-release/github",
+//       {
+//         "assets": [
+//           {"path": "dist/*.whl", "label": "Python Wheel"},
+//           {"path": "dist/*.tar.gz", "label": "Source Archive"}
+//         ]
+//       }
+//     ],
+//     [
+//       "@semantic-release/git",
+//       {
+//         "assets": ["CHANGELOG.md", "pyproject.toml"],
+//         "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+//       }
+//     ]
+//   ]
+// }
