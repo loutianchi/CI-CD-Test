@@ -1,6 +1,4 @@
-# This workflow is now optimized for multi-version testing, caching, and better dependency management.
-
-name: Python application CI
+name: Python CI/CD with Ruff, Coverage, and Commitlint
 
 on:
   push:
@@ -9,111 +7,108 @@ on:
     branches: [ "main" ]
 
 permissions:
-  contents: write  # 从 read 修改为 write，允许 action 推送 tag 和 release
-  issues: write    # 允许 action 评论 issue
-  pull-requests: write # 允许 action 评论 PR
+  contents: read
 
 jobs:
-  build:
-    # 更改任务名称以反映其内容
-    name: Test with Python ${{ matrix.python-version }}
+  # 任务一：代码质量检查 (Linting, Formatting, Type Checking)
+  lint_and_format:
+    name: Code Quality Check
     runs-on: ubuntu-latest
-    
-    # 1. 使用 Matrix 策略
-    strategy:
-      fail-fast: false # 即使一个版本的测试失败，也继续运行其他版本的测试
-      matrix:
-        python-version: ["3.9", "3.10", "3.11", "3.12"]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+
+      - name: Lint with Ruff
+        run: ruff check .
+
+      - name: Check formatting with Ruff
+        run: ruff format --check .
+
+      - name: Type checking with MyPy
+        run: mypy .
+
+  # 任务二：测试与代码覆盖率
+  test:
+    name: Unit Tests & Coverage
+    needs: lint_and_format
+    runs-on: ubuntu-latest
+    # 移除了 strategy 部分，现在只在一个环境中运行
 
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v4 # 建议使用最新主版本号
-      with:
-        python-version: ${{ matrix.python-version }}
-        # 2. 启用依赖缓存
-        cache: 'pip'
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install pytest
-        # 3. 从 requirements 文件安装依赖
-        pip install -r requirements-dev.txt
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        pip install -e .
+      - name: Set up Python 3.11 # 直接指定 Python 版本
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11" # 硬编码为 3.11
+          cache: 'pip'
+      
+      - name: Install dependencies
+        run: |
+          pip install -r requirements-dev.txt
+          pip install -e .
 
-    - name: Lint with flake8
-      run: |
-        # 4. 从配置文件读取规则，命令更简洁
-        # --config 指定配置文件，使 CI 和本地行为一致
-        flake8 . --config=.flake8
+      - name: Run tests with coverage
+        run: pytest --cov=py_calculator --cov-report=xml --cov-fail-under=80 tests/
 
-    - name: Test with pytest
-      run: |
-        pytest
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: coverage.xml
 
-  commit-lint:
+  # 任务三：Commit Message 规范检查
+  commit_lint:
     name: Commit Message Lint
     # 这个任务只在 Pull Request 事件中运行
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
           # 需要拉取所有历史记录，以便 linter 可以检查 PR 中的所有 commit
           fetch-depth: 0
       
       - name: Lint Commit Messages
-        # 使用社区提供的 commitlint Action
         uses: wagoid/commitlint-github-action@v5
-  
-  release:
-    name: Semantic Release and Deploy
-    needs: build
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+  # 任务四：打包
+  build:
+    name: Build Package
+    # 依赖于测试任务的成功
+    needs: test
+    # 只在推送到 main 分支时运行
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - name: Setup Python
+      - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.x'
+          python-version: "3.11"
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-      
-      # 新增：安装 Python 打包工具
-      - name: Install Python build dependencies
+      - name: Install build dependencies
         run: python -m pip install build
 
-      # 新增：构建 Python 包
-      - name: Build Python package
+      - name: Build package
         run: python -m build
 
-      - name: Install semantic-release and plugins
-        run: |
-          npm install \
-            semantic-release \
-            semantic-release-pypi \
-            @semantic-release/commit-analyzer \
-            @semantic-release/release-notes-generator \
-            @semantic-release/changelog \
-            @semantic-release/github \
-            @semantic-release/git \
-            conventional-changelog-conventionalcommits
-
-      - name: Run semantic-release and publish
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-          # 告诉 PyPI 插件，用户名为 __token__
-          # 将我们存储的 GitHub Secret 作为密码传递
-          PYPI_TOKEN: ${{ secrets.PYPI }}
-        run: npx semantic-release
+      - name: Upload package artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-package
+          path: ./dist
