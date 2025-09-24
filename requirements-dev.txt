@@ -1,3 +1,7 @@
-# Testing and Linting Tools
+# Linting & Formatting
+ruff
+mypy
+
+# Testing
 pytest
-flake8
+pytest-cov

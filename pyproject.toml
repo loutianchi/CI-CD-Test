@@ -3,22 +3,28 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "py-expression-calculator-ltcsz"  # 必需：在 PyPI 上必须是唯一的包名
-version = "0.0.0" # 重要：这个版本号会被 semantic-release 自动更新
+# 项目名称，在本地打包时依然需要
+name = "py-expression-calculator-ltcsz"
+# 版本号现在需要手动管理。CI/CD 流程不再会自动更新它。
+version = "0.1.0"
 authors = [
   { name="Your Name", email="your.email@example.com" },
 ]
 description = "A simple expression calculator that supports +, -, *, / operators."
-readme = "README.md" # 假设你有一个 README.md 文件
+readme = "README.md"
 requires-python = ">=3.8"
+# 分类器主要用于 PyPI，但保留它们作为项目元数据是好习惯
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
+
+# 这一部分至关重要，它告诉打包工具源代码位于 src/ 目录中
 [tool.setuptools.packages.find]
 where = ["src"]
 
+# 项目链接主要用于 PyPI，但保留它们也是好习惯
 [project.urls]
 "Homepage" = "https://github.com/your-username/your-repo-name"
 "Bug Tracker" = "https://github.com/your-username/your-repo-name/issues"
