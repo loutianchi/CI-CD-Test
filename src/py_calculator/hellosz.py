@@ -1,2 +1,2 @@
-print('hello sz!')
-print('RTX5090!')
+print("hello sz!")
+print("RTX5090!")
