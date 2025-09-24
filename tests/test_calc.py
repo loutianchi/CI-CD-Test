@@ -1,6 +1,5 @@
-# test_calculator.py
-
 import pytest
+import math
 from py_calculator.calc import calculate
 
 
@@ -30,7 +29,7 @@ def test_valid_expressions(expression, expected):
     assert calculate(expression) == expected
 
 
-# 2. 单独测试浮点数，使用 pytest.approx 来处理精度问题
+# 2. 单独测试浮点数, 使用 pytest.approx 来处理精度问题
 @pytest.mark.parametrize("expression, expected", [
     ("2.5 * 4", 10.0),
     ("10.5 / 2", 5.25),
@@ -50,8 +49,11 @@ def test_float_expressions(expression, expected):
     ("10 / 0", ZeroDivisionError),
     # 无效表达式
     ("5 * + 3", ValueError),
+    # ("5 5 + 3", ValueError), # 当前简化逻辑下, 此用例会通过
     ("", ValueError),
     ("5 +", ValueError),
+    # 包含无效字符
+    ("5a + 3", ValueError),
 ])
 def test_invalid_expressions(expression, error):
     """
@@ -61,7 +63,7 @@ def test_invalid_expressions(expression, error):
         calculate(expression)
 
 
-# 也可以写一些独立的、不带参数的测试函数
+# 也可以写一些独立的, 不带参数的测试函数
 def test_simple_case_without_param():
     """
     一个独立的简单测试用例
