@@ -1,5 +1,4 @@
 import pytest
-import math
 from py_calculator.calc import calculate
 
 
