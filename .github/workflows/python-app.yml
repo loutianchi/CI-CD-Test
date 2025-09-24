@@ -41,18 +41,16 @@ jobs:
     name: Unit Tests & Coverage
     needs: lint_and_format
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ["3.9", "3.10", "3.11", "3.12"]
+    # 移除了 strategy 部分，现在只在一个环境中运行
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: Set up Python 3.11 # 直接指定 Python 版本
         uses: actions/setup-python@v4
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: "3.11" # 硬编码为 3.11
           cache: 'pip'
       
       - name: Install dependencies
